@@ -5,48 +5,79 @@ data(mtcars)
 mtcars$car <- rownames(mtcars)
 mtcars$cyl <- factor(mtcars$cyl)
 
-large_theme <- theme_bw(base_size = 16) +
+large_theme <- theme_bw(base_size = 18) +
   theme(
-    plot.title = element_text(size = 20, face = "bold"),
-    axis.title = element_text(size = 16),
-    axis.text = element_text(size = 14),
-    legend.title = element_text(size = 16),
-    legend.text = element_text(size = 14)
+    plot.title = element_text(size = 22, face = "bold"),
+    axis.title = element_text(size = 18),
+    axis.text = element_text(size = 16),
+    legend.title = element_text(size = 18),
+    legend.text = element_text(size = 16),
+    plot.margin = margin(15, 20, 15, 20)
   )
 
-scatter_plot <- ggplot(mtcars,
-                       aes(wt, mpg, color = cyl)) +
-  geom_point(clickSelects = "cyl", size = 4) +
+# Scatter plot (controls selection)
+scatter_plot <- ggplot(
+  mtcars,
+  aes(wt, mpg, color = cyl)
+) +
+  geom_point(
+    size = 5,
+    clickSelects = "cyl"
+  ) +
   large_theme +
-  labs(title = "MPG vs Weight by Cylinder",
-       x = "Weight",
-       y = "Miles per Gallon",
-       color = "Cylinders")
+  labs(
+    title = "MPG vs Weight by Cylinder",
+    x = "Weight",
+    y = "Miles per Gallon",
+    color = "Cylinders"
+  )
 
-hist_plot <- ggplot(mtcars,
-                    aes(mpg, fill = cyl)) +
-  geom_histogram(bins = 10,
-                 alpha = 0.7,
-                 showSelected = "cyl") +
-  large_theme +
-  labs(title = "Distribution of MPG",
-       x = "Miles per Gallon",
-       y = "Count",
-       fill = "Cylinders")
-
-options(
-  animint.width = 900,
-  animint.height = 500,
-  animint.css = "
-    button { font-size: 18px !important; }
-    select { font-size: 18px !important; }
-    body { font-size: 18px !important; }
-  "
+# Create MPG bins manually (no stat_bin)
+breaks <- seq(
+  floor(min(mtcars$mpg)),
+  ceiling(max(mtcars$mpg)),
+  by = 5
 )
+
+mtcars$mpg_bin <- cut(
+  mtcars$mpg,
+  breaks = breaks,
+  include.lowest = TRUE
+)
+
+# Count cars per bin per cylinder
+count_data <- as.data.frame(
+  table(mtcars$mpg_bin, mtcars$cyl)
+)
+
+colnames(count_data) <- c("mpg_bin", "cyl", "count")
+
+# Bar chart
+bar_plot <- ggplot(
+  count_data,
+  aes(x = mpg_bin, y = count, fill = cyl)
+) +
+  geom_bar(
+    stat = "identity",
+    position = "identity",
+    alpha = 0.8,
+    showSelected = "cyl"
+  ) +
+  large_theme +
+  labs(
+    title = "MPG Distribution by Cylinder",
+    x = "MPG Range",
+    y = "Count",
+    fill = "Cylinders"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
 
 viz <- animint(
   scatter = scatter_plot,
-  histogram = hist_plot,
+  bars = bar_plot,
+  title = "Linked mtcars Visualization (Easy Test)",
   source = "https://github.com/ashishtiwari03/animint2-tests"
 )
 
