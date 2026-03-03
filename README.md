@@ -2,87 +2,93 @@
 
 This repository contains practice ports and interactive visualizations built using the **animint2** package in R.
 
-The objective is to translate examples from the `animation` package into interactive, web-based visualizations using the grammar of graphics and animint2’s interactive features.
+The goal is to translate examples from the `animation` package into interactive web-based visualizations using the grammar of graphics.
 
 ---
 
-## Repository Structure
+## ✅ Easy Test – Linked mtcars Visualization
 
-All source code lives in the `R/` directory.  
-Each visualization is deployed to a separate GitHub Pages repository using `animint2pages()`.
-
----
-
-# Easy Test – Linked mtcars Visualization
-
-This visualization demonstrates:
+This visualization demonstrates the use of:
 
 - `clickSelects`
 - `showSelected`
 - linked plots without Shiny
-- static GitHub Pages deployment
+- deployment via `animint2pages()`
 
-### Live Demo
+### 🔗 Live Demo
 
-https://ashishtiwari03.github.io/animint2-easy-pages
+https://ashishtiwari03.github.io/animint2-easy-pages/
 
-### Source Code
+### 📁 Source Code
 
-### Description
-
-The visualization consists of two linked plots:
-
-1. **Scatter plot – MPG vs Weight**
-   - Clicking a cylinder group selects that category.
-   - Implemented using `clickSelects = "cyl"`.
-
-2. **Bar chart – MPG distribution by cylinder**
-   - Updates dynamically based on selection.
-   - Implemented using `showSelected = "cyl"`.
-
-The bar chart uses `stat="identity"` and `position="identity"` because `showSelected` does not work with `stat_bin`.
+```
+R/easy-mtcars.R
+```
 
 ---
 
-# Medium Test – K-means Animation
+## ✅ Medium Test – K-means Clustering Animation
 
-This visualization translates the iterative behavior of `animation::kmeans.ani()` into animint2.
+This visualization recreates the `kmeans.ani()` animation using animint2.
 
-It demonstrates:
+Features:
 
-- Iterative algorithm translation
-- Construction of per-iteration data frames
-- `time = list(variable = "iteration")`
-- Linked multi-panel animation
-- Objective function tracking
+- Manual implementation of K-means algorithm
+- Iterative cluster center updates
+- Animated iteration control using `time`
+- Objective function tracking (Within-Cluster Sum of Squares)
+- Dual-panel visualization (cluster + objective)
 
-### Live Demo
+### 🔗 Live Demo
 
-https://ashishtiwari03.github.io/animint2-medium-pages
+https://ashishtiwari03.github.io/animint2-medium-pages/
 
-### Source Code
+### 📁 Source Code
 
-### Description
+```
+R/kmeans_translation.R
+```
 
-The implementation manually reproduces the k-means clustering steps:
+---
 
-1. Initialize random cluster centers.
-2. Assign each point to the nearest center.
-3. Update centers using cluster means.
-4. Repeat for multiple iterations.
+## ✅ Medium-Hard – Animint Gallery
 
-For each iteration:
+A dynamic gallery website built using **R Markdown**, listing all deployed animint visualizations.
 
-- Point assignments are stored.
-- Cluster centers are stored.
-- Total within-cluster sum of squares is computed.
+Features:
 
-Two linked plots are rendered:
+- Data-driven structure via `meta.csv`
+- Screenshot previews
+- Direct demo links
+- Source code links
+- Clean Bootstrap layout
+- GitHub Pages deployment via `gh-pages`
 
-- **Cluster visualization** (points + moving centers)
-- **Objective function plot** (total SS vs iteration)
+### 🔗 Live Gallery
 
-The animation is controlled using:
+https://ashishtiwari03.github.io/animint-gallery/
+
+### 📁 Gallery Repository
+
+https://github.com/ashishtiwari03/animint-gallery
+
+---
+
+## 🧠 Note on ggplot2 Masking
+
+If both `ggplot2` and `animint2` are loaded together:
 
 ```r
-time = list(variable = "iteration")
+library(ggplot2)
+library(animint2)
+```
+
+R will display masking messages because `animint2` provides modified versions of ggplot functions.
+
+For these implementations, only:
+
+```r
+library(animint2)
+```
+
+is used to avoid namespace conflicts.
