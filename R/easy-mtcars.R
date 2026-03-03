@@ -74,11 +74,10 @@ bar_plot <- ggplot(
     axis.text.x = element_text(angle = 45, hjust = 1)
   )
 
-viz <- animint(
+easy_viz <- animint(
   scatter = scatter_plot,
   bars = bar_plot,
   title = "Linked mtcars Visualization (Easy Test)",
   source = "https://github.com/ashishtiwari03/animint2-tests"
 )
 
-viz

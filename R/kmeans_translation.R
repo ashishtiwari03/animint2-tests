@@ -109,7 +109,7 @@ objective_plot <- ggplot(
     x = "Iteration",
     y = "Total Within-Cluster SS"
   )
-viz <- animint(
+kmeans_viz <- animint(
   cluster = cluster_plot,
   objective = objective_plot,
   time = list(
@@ -120,5 +120,3 @@ viz <- animint(
   source = "https://github.com/ashishtiwari03/animint2-tests"
 )
 
-animint2pages(viz, "animint2-medium-pages")
-source("R/kmeans_translation.R")
