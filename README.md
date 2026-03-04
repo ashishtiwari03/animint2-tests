@@ -1,9 +1,12 @@
 # animint2-tests
 
-This repository contains practice ports and interactive visualizations built using the **animint2** package in R.
+[![R](https://img.shields.io/badge/language-R-blue.svg)]()
+[![animint2](https://img.shields.io/badge/visualization-animint2-green.svg)]()
+[![GitHub Pages](https://img.shields.io/badge/deployed-GitHub%20Pages-orange.svg)]()
 
-The goal is to translate examples from the `animation` package into interactive web-based visualizations using the grammar of graphics.
+Practice ports and interactive visualizations built using the **animint2** package in R.
 
+The goal of this repository is to translate examples from the **animation** package into interactive web visualizations using the grammar of graphics.
 ---
 
 ## ✅ Easy Test – Linked mtcars Visualization
