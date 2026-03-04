@@ -11,6 +11,10 @@ The goal of this repository is to translate examples from the **animation** pack
 
 ## ✅ Easy Test – Linked mtcars Visualization
 
+Preview:
+
+![Easy Visualization](images/easy_preview.png)
+
 This visualization demonstrates the use of:
 
 - `clickSelects`
@@ -31,6 +35,10 @@ R/easy-mtcars.R
 ---
 
 ## ✅ Medium Test – K-means Clustering Animation
+
+Preview:
+
+![K-means Visualization](images/kmeans_preview.png)
 
 This visualization recreates the `kmeans.ani()` animation using animint2.
 
