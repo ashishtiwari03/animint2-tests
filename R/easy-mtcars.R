@@ -1,10 +1,7 @@
 library(animint2)
-
 data(mtcars)
-
 mtcars$car <- rownames(mtcars)
 mtcars$cyl <- factor(mtcars$cyl)
-
 large_theme <- theme_bw(base_size = 18) +
   theme(
     plot.title = element_text(size = 22, face = "bold"),
@@ -38,7 +35,6 @@ breaks <- seq(
   ceiling(max(mtcars$mpg)),
   by = 5
 )
-
 mtcars$mpg_bin <- cut(
   mtcars$mpg,
   breaks = breaks,
@@ -49,7 +45,6 @@ mtcars$mpg_bin <- cut(
 count_data <- as.data.frame(
   table(mtcars$mpg_bin, mtcars$cyl)
 )
-
 colnames(count_data) <- c("mpg_bin", "cyl", "count")
 
 # Bar chart
@@ -77,7 +72,7 @@ bar_plot <- ggplot(
 easy_viz <- animint(
   scatter = scatter_plot,
   bars = bar_plot,
+  first = list(cyl = "4"),  # FIX: select cyl=4 by default so bars visible on load
   title = "Linked mtcars Visualization (Easy Test)",
   source = "https://github.com/ashishtiwari03/animint2-tests"
 )
-
