@@ -1,37 +1,39 @@
 library(animint2)
+
 set.seed(123)
 
-# Create 3-cluster synthetic dataset
 x1 <- matrix(rnorm(100, mean = 0, sd = 0.4), ncol = 2)
 x2 <- matrix(rnorm(100, mean = 3, sd = 0.4), ncol = 2)
 x3 <- matrix(rnorm(100, mean = 6, sd = 0.4), ncol = 2)
+
 data_mat <- rbind(x1, x2, x3)
 colnames(data_mat) <- c("x", "y")
+
 data_points <- data.frame(
   id = 1:nrow(data_mat),
-  x = data_mat[, 1],
-  y = data_mat[, 2]
+  x = data_mat[,1],
+  y = data_mat[,2]
 )
 
 k <- 3
 max_iter <- 10
-# Random initial centers
-centers <- data_points[sample(1:nrow(data_points), k), c("x", "y")]
+
+centers <- data_points[sample(1:nrow(data_points), k), c("x","y")]
 
 points_list <- list()
 centers_list <- list()
 objective_list <- list()
 
-for (iter in 1:max_iter) {
+for(iter in 1:max_iter){
 
-  # Compute squared distances
-  dist_matrix <- sapply(1:k, function(j) {
+  dist_matrix <- sapply(1:k, function(j){
     (data_points$x - centers$x[j])^2 +
-      (data_points$y - centers$y[j])^2
+    (data_points$y - centers$y[j])^2
   })
 
-  cluster_assign <- apply(dist_matrix, 1, which.min)
-  total_ss <- sum(apply(dist_matrix, 1, min))
+  cluster_assign <- apply(dist_matrix,1,which.min)
+
+  total_ss <- sum(apply(dist_matrix,1,min))
 
   points_list[[iter]] <- data.frame(
     iteration = iter,
@@ -46,9 +48,8 @@ for (iter in 1:max_iter) {
     total_ss = total_ss
   )
 
-  # Update centers
   new_centers <- aggregate(
-    cbind(x, y) ~ cluster,
+    cbind(x,y) ~ cluster,
     data = data.frame(
       x = data_points$x,
       y = data_points$y,
@@ -57,7 +58,8 @@ for (iter in 1:max_iter) {
     mean
   )
 
-  centers <- new_centers[, c("x", "y")]
+  centers <- new_centers[,c("x","y")]
+
   centers_list[[iter]] <- data.frame(
     iteration = iter,
     cluster = factor(1:k),
@@ -72,42 +74,36 @@ objective_iter <- do.call(rbind, objective_list)
 
 theme_large <- theme_bw(base_size = 16)
 
-# FIX: Use only `fill` aesthetic on both geoms — produces exactly ONE legend
-# titled "Cluster". Previously color+fill on separate geoms created two legends.
 cluster_plot <- ggplot() +
   geom_point(
-    aes(x = x, y = y, fill = cluster),
+    aes(x = x, y = y, color = cluster),
     data = points_iter,
-    showSelected = "iteration",
-    shape = 21,
-    size = 2,
-    color = "black"
+    showSelected = "iteration"
   ) +
   geom_point(
-    aes(x = x, y = y, fill = cluster),
+    aes(x = x, y = y, color = cluster),
     data = centers_iter,
     showSelected = "iteration",
-    shape = 21,
-    size = 7,
-    color = "black",
-    stroke = 1.5
+    shape = 4,
+    size = 6,
+    stroke = 2
   ) +
   theme_large +
   labs(
     title = "K-means Clustering (Iterations)",
-    fill = "Cluster"
+    color = "Cluster"
   )
 
-# FIX: geom_tallrect with clickSelects is the idiomatic animint2 way to
-# click along an x-axis variable. Each rectangle spans one iteration.
-objective_plot <- ggplot(objective_iter, aes(x = iteration, y = total_ss)) +
-  geom_tallrect(
-    aes(xmin = iteration - 0.5, xmax = iteration + 0.5),
-    clickSelects = "iteration",
-    alpha = 0.3
-  ) +
+objective_plot <- ggplot(
+  objective_iter,
+  aes(x = iteration, y = total_ss)
+) +
   geom_line() +
-  geom_point(size = 3) +
+  geom_point(
+    aes(clickSelects = iteration),
+    showSelected = "iteration",
+    size = 3
+  ) +
   theme_large +
   labs(
     title = "Objective Function",
