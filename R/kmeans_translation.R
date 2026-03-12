@@ -72,33 +72,34 @@ objective_iter <- do.call(rbind, objective_list)
 
 theme_large <- theme_bw(base_size = 16)
 
-# FIX 1 & 2: Use same aesthetics (color + fill) on both geoms to unify into
-# one legend. scale_color_discrete(guide="none") drops the duplicate.
+# FIX: Use only `fill` aesthetic on both geoms — produces exactly ONE legend
+# titled "Cluster". Previously color+fill on separate geoms created two legends.
 cluster_plot <- ggplot() +
   geom_point(
-    aes(x = x, y = y, color = cluster, fill = cluster),
+    aes(x = x, y = y, fill = cluster),
     data = points_iter,
     showSelected = "iteration",
     shape = 21,
-    size = 2
+    size = 2,
+    color = "black"
   ) +
   geom_point(
-    aes(x = x, y = y, color = cluster, fill = cluster),
+    aes(x = x, y = y, fill = cluster),
     data = centers_iter,
     showSelected = "iteration",
     shape = 21,
     size = 7,
+    color = "black",
     stroke = 1.5
   ) +
-  scale_color_discrete(guide = "none") +  # drop duplicate color legend
   theme_large +
   labs(
     title = "K-means Clustering (Iterations)",
     fill = "Cluster"
   )
 
-# FIX 3: Use geom_tallrect with clickSelects for iteration selection —
-# this is the idiomatic animint2 way to click along an x-axis variable.
+# FIX: geom_tallrect with clickSelects is the idiomatic animint2 way to
+# click along an x-axis variable. Each rectangle spans one iteration.
 objective_plot <- ggplot(objective_iter, aes(x = iteration, y = total_ss)) +
   geom_tallrect(
     aes(xmin = iteration - 0.5, xmax = iteration + 0.5),
@@ -109,7 +110,7 @@ objective_plot <- ggplot(objective_iter, aes(x = iteration, y = total_ss)) +
   geom_point(size = 3) +
   theme_large +
   labs(
-    title = "Objective Function (click bar to select iteration)",
+    title = "Objective Function",
     x = "Iteration",
     y = "Total Within-Cluster SS"
   )
