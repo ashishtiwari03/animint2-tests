@@ -54,7 +54,7 @@ bar_plot <- ggplot(
 ) +
   geom_bar(
     stat = "identity",
-    position = "identity",
+    position = "dodge",   # FIX: dodge so bars don't overlap/hide each other
     alpha = 0.8,
     showSelected = "cyl"
   ) +
@@ -72,7 +72,7 @@ bar_plot <- ggplot(
 easy_viz <- animint(
   scatter = scatter_plot,
   bars = bar_plot,
-  first = list(cyl = "4"),  # FIX: select cyl=4 by default so bars visible on load
+  first = list(cyl = c("4", "6", "8")),  # FIX: all cylinders selected on load so all bars visible
   title = "Linked mtcars Visualization (Easy Test)",
   source = "https://github.com/ashishtiwari03/animint2-tests"
 )
