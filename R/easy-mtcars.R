@@ -1,7 +1,5 @@
 library(animint2)
-
 data(mtcars)
-
 mtcars$car <- rownames(mtcars)
 mtcars$cyl <- factor(mtcars$cyl)
 
@@ -36,7 +34,6 @@ breaks <- seq(
   ceiling(max(mtcars$mpg)),
   by = 5
 )
-
 mtcars$mpg_bin <- cut(
   mtcars$mpg,
   breaks = breaks,
@@ -46,7 +43,6 @@ mtcars$mpg_bin <- cut(
 count_data <- as.data.frame(
   table(mtcars$mpg_bin, mtcars$cyl)
 )
-
 colnames(count_data) <- c("mpg_bin", "cyl", "count")
 
 bar_plot <- ggplot(
@@ -77,3 +73,4 @@ easy_viz <- animint(
   title = "Linked mtcars Visualization (Easy Test)",
   source = "https://github.com/ashishtiwari03/animint2-tests"
 )
+
