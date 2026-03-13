@@ -55,7 +55,7 @@ bar_plot <- ggplot(
 ) +
   geom_bar(
     stat = "identity",
-    position = "stack",
+    position = "dodge",  # CHANGED from "stack"
     alpha = 0.85,
     showSelected = "cyl"
   ) +
@@ -73,6 +73,7 @@ bar_plot <- ggplot(
 easy_viz <- animint(
   scatter = scatter_plot,
   bars = bar_plot,
+  first = list(cyl = c("4","6","8")),
   title = "Linked mtcars Visualization (Easy Test)",
   source = "https://github.com/ashishtiwari03/animint2-tests"
 )
